@@ -1,0 +1,20 @@
+[
+    {
+        "mobilApp": {
+            "title": "Internet banking with Mobile App",
+            "content": "Stay updated on your finances anytime, anywhere. Track your spending and account balance effortlessly with our mobile app..."
+        }
+    },
+    {
+        "card2": {
+            "title": "Card 2",
+            "content": "Content for Card 2"
+        }
+    },
+    {
+        "card3": {
+            "title": "Card 3",
+            "content": "Content for Card 3"
+        }
+    }
+]
