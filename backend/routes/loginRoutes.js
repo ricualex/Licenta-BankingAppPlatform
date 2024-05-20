@@ -1,8 +1,6 @@
 const User = require("../mongoutil/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const axios = require("axios");
-const xml2js = require("xml2js");
 
 module.exports = function (router) {
     router.post('/login', async (req, res) => {

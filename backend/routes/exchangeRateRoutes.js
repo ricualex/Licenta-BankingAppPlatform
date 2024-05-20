@@ -1,6 +1,3 @@
-const User = require("../mongoutil/User");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const axios = require("axios");
 const xml2js = require("xml2js");
 
