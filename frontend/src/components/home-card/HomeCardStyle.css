@@ -1,0 +1,36 @@
+.card {
+    border: 1px solid white;
+    border-radius: 20px;
+    box-shadow: 1px 1px 1px white;
+    padding: 20px;
+    margin: 10px;
+    text-align: center;
+    max-width: 250px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card p {
+    margin-top: 10px;
+}
+
+.card .card-image {
+    width: 70%;
+    height: 150px;
+    border-radius: 20%;
+    margin-bottom: 10px;
+    margin-right: 20px;
+}
+
+.card .card-title {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    color: white
+}
+
+.card .card-text {
+    font-family: Arial, sans-serif;
+    color: white
+}
