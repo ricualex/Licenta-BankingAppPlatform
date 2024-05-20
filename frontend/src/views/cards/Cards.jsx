@@ -2,12 +2,12 @@ import React from "react";
 import "./HomeStyle.css"
 
 
-const Home = () => {
+const Cards = () => {
     return (
         <div className="wrapper">
-            <h1>Homepage!</h1>
+            <h1>Cards!</h1>
         </div>
     )
 }
 
-export default Home
+export default Cards

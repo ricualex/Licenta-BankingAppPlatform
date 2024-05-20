@@ -2,12 +2,12 @@ import React from "react";
 import "./HomeStyle.css"
 
 
-const Home = () => {
+const Finance = () => {
     return (
         <div className="wrapper">
-            <h1>Homepage!</h1>
+            <h1>Finance!</h1>
         </div>
     )
 }
 
-export default Home
+export default Finance

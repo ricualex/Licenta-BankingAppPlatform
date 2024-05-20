@@ -2,12 +2,12 @@ import React from "react";
 import "./HomeStyle.css"
 
 
-const Home = () => {  
+const Credits = () => {  
     return (
         <div className="wrapper">
-            <h1>Homepage!</h1>
+            <h1>Credits!</h1>
         </div>
     )
 }
 
-export default Home
+export default Credits
