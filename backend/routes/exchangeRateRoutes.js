@@ -10,8 +10,8 @@ module.exports = function (router) {
                 if (err) {
                     return res.status(500).send("Something went wrong!");
                 }
-                const currencyDictionary = _extractCurrencies(result);
-                res.json(currencyDictionary);
+                const currencyDict = _extractCurrencies(result);
+                res.json(currencyDict);
             });
         } catch (error) {
             res.status(500).send("Something went wrong!");
