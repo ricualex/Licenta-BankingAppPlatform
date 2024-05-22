@@ -5,6 +5,7 @@ import HomeCard from "../../components/home-card/HomeCard";
 import mobileBankingCardImage from '../../assets/mobilebanking.png';
 import loanCalculatorCardImage from "../../assets/card-image-loan-calculator.png"
 import virtualCardsCardImage from "../../assets/virtual-cards-logo.png"
+import ExchangeRateBar from "../../components/exchange-rate-bar/ExchangeRateBar";
 
 
 const Home = () => {
@@ -41,6 +42,11 @@ const Home = () => {
                     })
                 }
             </div>
+            <div className="home-rates">
+                <ExchangeRateBar />
+            </div>
+
+
         </div>
     )
 }
