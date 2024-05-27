@@ -1,22 +1,20 @@
 const express = require("express");
-const routes = require("./router.js");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const router = require("./routes/router.js");
 
 dotenv.config({ path: './store.env' });
 
 const app = express();
 
 const corsOptions = {
-    origin: 'http://localhost:3000'
-  };
+  origin: 'http://localhost:3000'
+};
 
 app.use(cors(corsOptions));
 
 app.use(express.json());
-app.use('/api', routes);
-
-const port = 80;
+app.use('/api', router);
 
 console.log(process.env.DATABASE_URL);
 
@@ -26,14 +24,7 @@ mongoose.connect(process.env.DATABASE_URL, {})
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err));
 
-app.get('/', (req, res) => {
-    res.send('testapi!');
-});
-
-app.get('/test', (req, res) => {
-    
-});
-
+const port = process.env.SERVER_PORT;
 app.listen(port, () => {
-    console.log(`Server is listening at http://localhost:${port}`);
+  console.log(`Server is listening at ${process.env.SERVER_URL}:${port}`);
 });
