@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import "./ExchangeRateBarStyle.css";
 import uk_flag from "../../assets/uk_flag.png"
@@ -35,24 +35,27 @@ export default function ExchangeRateBar() {
         }
     ]);
 
-    const getCurrencyRates = async () => {
+    const getCurrencyRates = useCallback(async () => {
         axios.get('http://localhost:80/api/exchangeRatesAll')
-        .then((response) => {
-            const rates = response.data;
-            const updatedCurrencyRates = currencyRates.map(rate => ({
-                ...rate,
-                value: rates[rate.name]
-              }));
-              setCurrencyRates(updatedCurrencyRates);
-        })
-        .catch((error) => {
-            setRatesError("We are sorry, we could not fetch exchange rates!");
-        });
-    }
+            .then((response) => {
+                const rates = response.data;
+                const updatedCurrencyRates = currencyRates.map(rate => ({
+                    ...rate,
+                    value: rates[rate.name]
+                }));
+                setCurrencyRates(updatedCurrencyRates);
+            })
+            .catch((error) => {
+                setRatesError("We are sorry, we could not fetch exchange rates!");
+            });
+        // eslint-disable-next-line
+    }, []);
 
     useEffect(() => {
         getCurrencyRates();
-    }, []);
+        const interval = setInterval(getCurrencyRates, 60000);
+        return () => clearInterval(interval);
+    }, [getCurrencyRates]);
 
     return (
         <div className="exchange-rate-bar">
