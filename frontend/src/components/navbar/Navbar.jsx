@@ -13,7 +13,6 @@ export default function Navbar() {
           <CustomLink to="/cards">Cards</CustomLink>
           <CustomLink to="/finance">Finance</CustomLink>
           <CustomLink to="/ibanking">InternetBanking</CustomLink>
-          <CustomLink to="/logout">Logout</CustomLink>
         </ul>
       </nav>
     </div>
