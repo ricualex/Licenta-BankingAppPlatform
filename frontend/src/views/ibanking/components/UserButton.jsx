@@ -11,10 +11,12 @@ import MenuList from '@mui/material/MenuList';
 import { IconButton } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import "../InternetBankingStyle.css";
+import { useNavigate } from "react-router-dom";
 
 const options = ["Logout"];
 
 const UserButton = () => {
+    const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
     const [selectedIndex, setSelectedIndex] = React.useState(1);
@@ -24,6 +26,7 @@ const UserButton = () => {
     };
 
     const handleMenuItemClick = (event, index) => {
+        navigate("/login");
         setOpen(false);
     };
 

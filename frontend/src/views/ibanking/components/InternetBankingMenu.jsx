@@ -1,16 +1,24 @@
 import React from "react";
 import "../InternetBankingStyle.css"
+import { useNavigate } from "react-router-dom";
 
 const InternetBankingMenu = ({ setSelectedTab }) => {
 
+    const navigate = useNavigate();
+
     const handleTabSelection = (selection) => {
         setSelectedTab(selection);
+    }
+
+    const goToHome = () => {
+        navigate("/home");
     }
 
     return (
         <div className="left-menu normal-panel">
             <button
                 className="left-menu-button"
+                onClick={goToHome}
             >
                 Home
             </button>
