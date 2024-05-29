@@ -1,0 +1,84 @@
+.ibanking-page-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(35, 0, 87);
+}
+
+.normal-panel {
+    background-color: rgb(3, 6, 55);
+    border-radius: 20px;
+}
+
+.upper-div {
+    position: absolute;
+    box-sizing: border-box;
+    left: 20%;
+    top: 8%;
+    width: 65vw;
+    height: 10vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.left-menu {
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    left: 20%;
+    box-sizing: border-box;
+    overflow: auto;
+    width: 15vw;
+    height: 60vh;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.left-menu::-webkit-scrollbar {
+    display: none;
+}
+
+.right-menu {
+    position: absolute;
+    right: 15%;
+    width: 49vw;
+    height: 60vh;
+}
+
+h1 {
+    padding: 20px 30px;
+    color: white;
+}
+
+.left-menu-button {
+    top: 3%;
+    background-color: transparent;
+    position: relative;
+    padding: 5% 5%;
+    width: 90%;
+    left: 5%;
+    border: 0px;
+    color: white;
+    font-size: 1.5vw;
+    border-bottom: 3px solid rgba(35, 0, 87);
+    cursor: pointer;
+}
+
+.left-menu-button:hover {
+    background-color: rgba(35, 0, 87);
+}
+
+#userButtonGroup {
+    position: relative;
+    left: 70%;
+    top: 35%;
+}
+
+#userButton, #userButtonSplit, #userButtonGroup {
+    background-color: transparent;
+    border: none;
+    position: relative;
+    font-size: 1.5vh;
+}
