@@ -18,7 +18,6 @@ const IBanking = () => {
     return (
         <div className="ibanking-page-wrapper">
             <div className="upper-div normal-panel">
-                {/* <label className="upper-menu user-label">{`Client (user): user`}</label> */}
                 <UserButton></UserButton>
             </div>
             <InternetBankingMenu setSelectedTab={setSelectedTab} />

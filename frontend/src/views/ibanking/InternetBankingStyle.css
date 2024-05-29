@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(35, 0, 87);
+    background-color: rgb(3, 0, 28);
 }
 
 .normal-panel {
@@ -42,13 +42,18 @@
 
 .right-menu {
     position: absolute;
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: 1fr 1fr;
     right: 15%;
     width: 49vw;
     height: 60vh;
+    gap: 0px;
 }
 
-h1 {
+h3 {
     padding: 20px 30px;
+    margin-top: -30px;
     color: white;
 }
 
@@ -62,12 +67,12 @@ h1 {
     border: 0px;
     color: white;
     font-size: 1.5vw;
-    border-bottom: 3px solid rgba(35, 0, 87);
+    border-bottom: 3px solid rgb(3, 0, 28);
     cursor: pointer;
 }
 
 .left-menu-button:hover {
-    background-color: rgba(35, 0, 87);
+    background-color: rgb(3, 0, 28);
 }
 
 #userButtonGroup {
@@ -76,9 +81,93 @@ h1 {
     top: 35%;
 }
 
-#userButton, #userButtonSplit, #userButtonGroup {
+#userButton,
+#userButtonSplit,
+#userButtonGroup {
     background-color: transparent;
     border: none;
     position: relative;
     font-size: 1.5vh;
+}
+
+.account-details {
+    grid-row: 2 / span 2;
+    grid-column: 1;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(3, 0, 28);
+    align-items: center;
+    justify-content: center;
+    margin-left: 20px;
+    width: 18vw;
+    height: 30vh;
+    padding: 20px;
+}
+
+#account-sold-button,
+#account-username-button,
+#account-iban-button {
+    position: relative;
+    width: 250px;
+    text-transform: none;
+    border: none;
+    font-size: 1.8vh;
+    color: white;
+}
+
+
+.recent-transfers {
+    border-radius: 20px;
+    background-color: rgb(3, 0, 28);
+    grid-row: 2;
+    grid-column: 2;
+    margin-left: -40px;
+    width: 20vw;
+    height: 20vh;
+    padding: 20px;
+}
+
+.future-payments {
+    border-radius: 20px;
+    background-color: rgb(3, 0, 28);
+    grid-row: 3;
+    grid-column: 2;
+    margin-left: -40px;
+    width: 20vw;
+    height: 20vh;
+    padding: 20px;
+}
+
+.my-account-title {
+    padding: 20px 30px;
+    color: white;
+}
+
+.my-account-titles {
+    grid-column: 1 / span 2;
+}
+
+table {
+    width: 20vw;
+    height: 10vh;
+    overflow: hidden;
+    margin: 0px;
+}
+
+th,
+td {
+    border: none;
+    text-align: left;
+    background-color: transparent;
+    padding: 0px;
+}
+
+.icon-cell {
+    padding: 0px 0px;
+    width: 50px;
+}
+
+.data-cell {
+    padding: 0px;
 }
