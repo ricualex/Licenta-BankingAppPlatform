@@ -58,17 +58,17 @@ h3 {
 }
 
 .left-menu-button {
-    top: 3%;
+    top: 12%;
     background-color: transparent;
     position: relative;
     padding: 5% 5%;
-    width: 90%;
+    width: 80%;
     left: 5%;
     border: 0px;
     color: white;
-    font-size: 1.5vw;
+    font-size: 1vw;
     border-bottom: 3px solid rgb(3, 0, 28);
-    cursor: pointer;
+    cursor: pointer;    
 }
 
 .left-menu-button:hover {
