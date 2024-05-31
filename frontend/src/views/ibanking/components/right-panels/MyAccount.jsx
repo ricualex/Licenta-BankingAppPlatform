@@ -56,7 +56,7 @@ const MyAccount = () => {
             <div className="account-details">
                 <ButtonGroup className="account-details-button-group" variant="outlined">
                     <Button id="account-sold-button">{isSoldVisible ? accountSold : "Main account"}</Button>
-                    <IconButton onClick={toggleSoldVisibility}>
+                    <IconButton id="toggle-visibility-button" onClick={toggleSoldVisibility}>
                         <VisibilityOffIcon sx={{ color: 'white', fontSize: 25 }} />
                     </IconButton>
                 </ButtonGroup>

@@ -105,6 +105,20 @@ h3 {
     padding: 20px;
 }
 
+#account-sold-button {
+    font-size: 3vh;
+    margin-bottom: 30px;
+}
+#toggle-visibility-button {
+    margin-bottom: 30px;
+
+}
+
+#account-username-button,
+#account-iban-button {
+    font-size: 1.8vh;
+}
+
 #account-sold-button,
 #account-username-button,
 #account-iban-button {
@@ -112,7 +126,6 @@ h3 {
     width: 250px;
     text-transform: none;
     border: none;
-    font-size: 1.8vh;
     color: white;
 }
 
