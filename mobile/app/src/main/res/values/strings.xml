@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">MobileBankingApp</string>
+    <string name="app_name">MobileBanking</string>
+    <string name="default_web_client_id">230587628808-0i4h9robikngjebl1s3rgdmvfjgn5il2.apps.googleusercontent.com</string>
+    <string name="key_alias">keystore_alias</string>
 </resources>

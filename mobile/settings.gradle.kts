@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MobileBankingApp"
+rootProject.name = "MobileBanking"
 include(":app")
