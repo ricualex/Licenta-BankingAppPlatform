@@ -17,10 +17,32 @@ class UserViewModel(private val firebaseRepo: FirebaseRepository) : ViewModel() 
         registrationData = UserData()
     }
 
-    fun submitRegister(firstName: String, lastName: String, cnp: String, birthDate: String, keyStoreKey: String) {
-        registrationData = UserData(firstName = firstName, lastName = lastName, cnp = cnp, birthDate = birthDate, balance = mapOf("RON" to 0.0))
-        firebaseRepo.registerUser(registrationData.encrypt(keyStoreKey))
+    fun generateIBan(length: Int = 18): String {
+        val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+        return (1..length)
+            .map { chars.random() }
+            .joinToString("")
+    }
 
+    fun submitRegister(userName:String, password: String, email: String, firstName: String, lastName: String, cnp: String, birthDate: String, address: String, keyStoreKey: String) {
+        registrationData = UserData(
+            userName = userName,
+            password = password,
+            email = email,
+            firstName = firstName,
+            lastName = lastName,
+            iban = "ROEB" + generateIBan(),
+            cnp = cnp,
+            birthDate = birthDate,
+            address = address,
+            balance = mapOf("RON" to 0.0),
+            needConfirmation = "false"
+        )
+        firebaseRepo.registerUser(registrationData.encrypt(keyStoreKey))
+    }
+
+    fun confirmLogin() {
+        firebaseRepo.confirmLogin(userId.value)
     }
 
     fun updateUserId(userId: String) {
