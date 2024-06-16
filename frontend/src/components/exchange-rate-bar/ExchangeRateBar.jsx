@@ -36,7 +36,7 @@ export default function ExchangeRateBar() {
     ]);
 
     const getCurrencyRates = useCallback(async () => {
-        axios.get('http://localhost:80/api/exchangeRatesAll')
+        axios.get('http://localhost:8080/api/exchangeRatesAll')
             .then((response) => {
                 const rates = response.data;
                 const updatedCurrencyRates = currencyRates.map(rate => ({

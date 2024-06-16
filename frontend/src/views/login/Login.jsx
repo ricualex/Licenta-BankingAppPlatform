@@ -14,9 +14,9 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:80/api/login', { username, password });
+      const response = await axios.post('http://localhost:8080/api/login', { username, password });
       if (response.status === 200) {
-        console.log(response);
+        console.log(response.data.token);
         localStorage.setItem("jwtToken", response.data.token);
         navigate("/home");
       }

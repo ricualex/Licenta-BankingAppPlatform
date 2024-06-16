@@ -2,18 +2,24 @@ const User = require("../mongoutil/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-module.exports = function (router) {
+module.exports = function (router, firebaseUtils) {
     router.post('/login', async (req, res) => {
         const { username, password } = req.body;
         try {
-            const user = await User.findOne({ username });
-            if (!user || !await bcrypt.compare(password, user.password)) {
-                return res.status(401).send({ message: "You are not allowed to login!" });
+            const firebaseUser = await firebaseUtils.loginUsingFirebase(username);
+            if (!firebaseUser) {
+                return res.status(404).json({ message: 'User not found' });
             }
-            const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-            res.status(200).send({ token: token, message: "Login successfuly!" });
+            else {
+                if (firebaseUser.success === true) {
+                    return res.status(200).json({token: firebaseUser.user.loginToken, message: 'Successfuly logged in' });
+                }
+                else {
+                    return res.status(500).json({ message: 'Something went wrong' });
+                }
+            }
         } catch (error) {
-            res.status(500).send({ message: "Something went wrong!" });
+            res.status(500).json({ message: 'Server error', error: error.message });
         }
     });
-}
+};
