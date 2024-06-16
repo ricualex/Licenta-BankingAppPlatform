@@ -13,6 +13,8 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 interface FirebaseRepository {
     fun getUserData(userId: String): Flow<UserData>
@@ -21,8 +23,9 @@ interface FirebaseRepository {
     fun deleteCard(cardId: String)
     fun setDefaultCard(cardId: String, prevCardId: String? = null)
     fun updateBalance(currencyFrom: String, currencyTo: String, amountFrom: Double, amountTo: Double)
-
     fun registerUser(userProfile: UserData)
+    fun confirmLogin(userId: String)
+
 }
 
 class NetworkFirebaseRepository : FirebaseRepository {
@@ -99,6 +102,27 @@ class NetworkFirebaseRepository : FirebaseRepository {
         val databaseUserData = getUserData(userId!!)
         databaseRef.child(userId).child("balance").child(currencyFrom).setValue(amountFrom)
         databaseRef.child(userId).child("balance").child(currencyTo).setValue(amountTo)
+    }
+
+    override fun confirmLogin(userId: String) {
+        val database: FirebaseDatabase = FirebaseDatabase.getInstance()
+        val databaseRef: DatabaseReference = database.getReference("users")
+        databaseRef.child(userId).child("needConfirmation").setValue("false");
+        databaseRef.child(userId).child("loginToken").setValue(createSession());
+    }
+
+    private fun generateToken(length: Int = 10): String {
+        val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+        return (1..length)
+            .map { chars.random() }
+            .joinToString("")
+    }
+    private fun createSession(): Map<String, String> {
+        val currentDateTime = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val formattedDateTime = currentDateTime.format(formatter)
+
+        return mapOf(generateToken() to formattedDateTime)
     }
 
 }

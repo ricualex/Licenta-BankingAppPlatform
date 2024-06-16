@@ -5,12 +5,21 @@ import com.example.mobilebanking.utils.encryptData
 import com.example.mobilebanking.utils.getSecretKey
 
 data class UserData(
+    val userName: String? = "",
+    val password: String? = "",
+    val email: String? = "",
     val firstName: String? = "",
     val lastName: String? = "",
     val birthDate: String? = "",
     val cnp: String? = "",
+    val address: String? = "",
+    val iban: String? = "",
     val balance: Map<String, Double> = mapOf("RON" to 0.0),
-    val cards: Map<String, CreditCard> = mapOf()
+    val cards: Map<String, CreditCard> = mapOf(),
+    val transactions: Map<String, Double> = mapOf("Default" to 0.0),
+    val friendList: List<String> = listOf("Default"),
+    val friendsTransactions: Map<String, Double> = mapOf("Default" to 0.0),
+    val needConfirmation: String? = "false"
 ) {
     fun encrypt(keyStoreKey: String): UserData {
         val key = getSecretKey(keyStoreKey)
@@ -18,7 +27,8 @@ data class UserData(
             firstName = encryptData(firstName!!, key),
             lastName = encryptData(lastName!!, key),
             cnp = encryptData(cnp!!, key),
-            birthDate = encryptData(birthDate!!, key)
+            birthDate = encryptData(birthDate!!, key),
+            address = encryptData(address!!, key),
         )
     }
 
@@ -28,7 +38,8 @@ data class UserData(
             firstName = decryptData(firstName!!, key),
             lastName = decryptData(lastName!!, key),
             cnp = decryptData(cnp!!, key),
-            birthDate = decryptData(birthDate!!, key)
+            birthDate = decryptData(birthDate!!, key),
+            address = encryptData(address!!, key),
         )
     }
 }

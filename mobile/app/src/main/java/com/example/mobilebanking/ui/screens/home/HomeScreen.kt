@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -47,10 +48,13 @@ fun HomeScreen(
     userViewModel: UserViewModel
 ) {
     var needToCompleteRegisterDialog by remember { mutableStateOf(true) }
+    var userName by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var cnp by remember { mutableStateOf("") }
     var birthDate by remember { mutableStateOf("") }
+    var address by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,46 +70,97 @@ fun HomeScreen(
                 Dialog(onDismissRequest = {
                     needToCompleteRegisterDialog = false
                 }) {
-                    Column(
+                    LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(Color.Black),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(text = "Before using our app, we need to finalize your registration.")
-                        Text(text = "Please provide us the following informations. All data will be kept in privacy")
-                        RegisterTextField(labelText = "FirstName", text = firstName) {
-                            firstName = it
+                        item { Text(text = "Before using our app, we need to finalize your registration.") }
+                        item { Text(text = "Please provide us the following informations. All data will be kept in privacy") }
+                        item {
+                            RegisterTextField(labelText = "Username", text = userName) {
+                                userName = it
+                            }
                         }
-                        Spacer(modifier = Modifier.height(30.dp))
-                        RegisterTextField(labelText = "LastName", text = lastName) {
-                            lastName = it
+                        item { Spacer(modifier = Modifier.height(30.dp)) }
+                        item {
+                            RegisterTextField(labelText = "Password", text = password) {
+                                password = it
+                            }
                         }
-                        Spacer(modifier = Modifier.height(30.dp))
-                        RegisterTextField(labelText = "CNP", text = cnp) {
-                            cnp = it
+                        item { Spacer(modifier = Modifier.height(30.dp)) }
+                        item {
+                            RegisterTextField(labelText = "FirstName", text = firstName) {
+                                firstName = it
+                            }
                         }
-                        Spacer(modifier = Modifier.height(30.dp))
-                        RegisterTextField(labelText = "BirthDate", text = birthDate) {
-                            birthDate = it
+                        item { Spacer(modifier = Modifier.height(30.dp)) }
+                        item {
+                            RegisterTextField(labelText = "LastName", text = lastName) {
+                                lastName = it
+                            }
                         }
-                        val key = stringResource(id = R.string.key_alias)
-                        RoundGreyButton(value = "Confirm", onButtonClick = {
-                            needToCompleteRegisterDialog = false
-                            userViewModel.submitRegister(
-                                firstName = firstName,
-                                lastName = lastName,
-                                cnp = cnp,
-                                birthDate = birthDate,
-                                keyStoreKey = key
-                            )
-                        })
+                        item { Spacer(modifier = Modifier.height(30.dp)) }
+                        item {
+                            RegisterTextField(labelText = "CNP", text = cnp) {
+                                cnp = it
+                            }
+                        }
+                        item { Spacer(modifier = Modifier.height(30.dp)) }
+                        item {
+                            RegisterTextField(labelText = "BirthDate", text = birthDate) {
+                                birthDate = it
+                            }
+                        }
+                        item { Spacer(modifier = Modifier.height(30.dp)) }
+                        item {
+                            RegisterTextField(labelText = "Address", text = address) {
+                                address = it
+                            }
+                        }
+                        item { Spacer(modifier = Modifier.height(30.dp)) }
+                        item {
+                            val key = stringResource(id = R.string.key_alias)
+                            RoundGreyButton(value = "Confirm", onButtonClick = {
+                                needToCompleteRegisterDialog = false
+                                userViewModel.submitRegister(
+                                    userName = userName,
+                                    password = password,
+                                    email = userProfile.username!!,
+                                    firstName = firstName,
+                                    lastName = lastName,
+                                    cnp = cnp,
+                                    birthDate = birthDate,
+                                    address = address,
+                                    keyStoreKey = key
+                                )
+                            })
+                        }
                     }
 
                 }
             }
-
+        }
+        dataModel.takeIf {
+            it.needConfirmation == "true"
+        }?.let {
+            Dialog(onDismissRequest = {
+            }) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    item { Text(text = "Confirm login") }
+                    item { RoundGreyButton(value = "Confirm", onButtonClick = {
+                        userViewModel.confirmLogin()
+                    }) }
+                }
+            }
         }
 
         Column(
