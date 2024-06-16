@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../InternetBankingStyle.css"
 import { useState } from 'react';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -8,15 +8,30 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { Table, TableBody } from '@mui/material';
 import TransactionRow from "./components/TransactionRow";
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 
 const MyAccount = () => {
-    const [accountSold, setAccountSold] = useState("0.0 Lei");
-    const [username, setUsername] = useState("username");
-    const [iban, setIban] = useState("0000 0000 0000 0000");
+    const user = useSelector((state) => state.user.user);
+    const [userDataState, setUserDataState] = useState({
+        accountSold: "0 Lei",
+        username: "userName",
+        iban: "0000 000 000 000",
+        transactionRows: [
+            { data: ["Profi", "-20 lei"] },
+            { data: ["Alexandru", "+15 lei"] },
+        ],
+        paymentsRows: [
+            { data: ["Power bill", "2 days", "-150 lei"] },
+            { data: ["Cell phone", "12 days", "-192 lei"] },
+        ]
+    });
     const [isSoldVisible, setIsSoldVisible] = useState(true);
+    const dispatch = useDispatch();
 
     const toggleSoldVisibility = () => {
         setIsSoldVisible(!isSoldVisible);
+        console.log(userDataState);
     }
 
     const transactionRows = [
@@ -40,6 +55,41 @@ const MyAccount = () => {
         return localStorage.getItem("lastLogin")
     };
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+        const response = await axios.post('http://localhost:8080/api/syncUser', { userId });
+        if (response.status === 200) {
+          dispatch({ type: 'SET_USER', payload: response.data.user });
+          console.log(response.data.user);
+          const transactionNames = Object.keys(response.data.user.transactions);
+          const transactionValues = Object.values(response.data.user.transactions);
+          const userData = {
+            accountSold: `${response.data.user.balance.RON} Lei`,
+            username: response.data.user.userName,
+            iban: response.data.user.iban,
+            transactionRows: [
+                { data: [transactionNames[0], transactionValues[0]] },
+                { data: [transactionNames[1], transactionValues[1]] },
+            ],
+            paymentsRows: [
+                { data: ["Power bill", "2 days", "-150 lei"] },
+                { data: ["Cell phone", "12 days", "-192 lei"] },
+            ]
+        }
+          setUserDataState(userData)
+        }
+      } catch (error) {
+        console.error('Failed to sync user data', error);
+      }
+    };
+    fetchData();
+    const intervalId = setInterval(fetchData, 5000);
+    return () => clearInterval(intervalId);
+  }, [dispatch]);
+
     return (
         <div className="right-menu normal-panel">
             <div className="my-account-titles">
@@ -48,20 +98,20 @@ const MyAccount = () => {
             </div>
             <div className="account-details">
                 <ButtonGroup className="account-details-button-group" variant="outlined">
-                    <Button id="account-sold-button">{isSoldVisible ? accountSold : "Main account"}</Button>
+                    <Button id="account-sold-button">{isSoldVisible ? userDataState.accountSold : "Main account"}</Button>
                     <IconButton id="toggle-visibility-button" onClick={toggleSoldVisibility}>
                         <VisibilityOffIcon sx={{ color: 'white', fontSize: 25 }} />
                     </IconButton>
                 </ButtonGroup>
                 <ButtonGroup className="account-details-button-group" variant="outlined">
-                    <Button id="account-username-button">{username}</Button>
-                    <IconButton onClick={() => copyToClipboard(username)}>
+                    <Button id="account-username-button">{userDataState.username}</Button>
+                    <IconButton onClick={() => copyToClipboard(userDataState.username)}>
                         <ContentCopyIcon sx={{ color: 'white', fontSize: 25 }} />
                     </IconButton>
                 </ButtonGroup>
                 <ButtonGroup className="account-details-button-group" variant="outlined">
-                    <Button id="account-iban-button">{iban}</Button>
-                    <IconButton onClick={() => copyToClipboard(iban)}>
+                    <Button id="account-iban-button">{userDataState.iban}</Button>
+                    <IconButton onClick={() => copyToClipboard(userDataState.iban)}>
                         <ContentCopyIcon sx={{ color: 'white', fontSize: 25 }} />
                     </IconButton>
                 </ButtonGroup>
@@ -70,7 +120,7 @@ const MyAccount = () => {
                 <h2 style={{ color: "white", fontSize: "18px" }}>Recent transactions</h2>
                 <Table>
                     <TableBody>
-                        {transactionRows.map((row, index) => (
+                        {userDataState.transactionRows.map((row, index) => (
                             <TransactionRow key={index} data={row.data} />
                         ))}
                     </TableBody>
