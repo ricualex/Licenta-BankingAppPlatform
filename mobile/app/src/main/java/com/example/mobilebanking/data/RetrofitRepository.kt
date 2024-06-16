@@ -4,6 +4,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.example.mobilebanking.model.ExchangeRateResponse
 import com.example.mobilebanking.model.GoogleMapsApiResponse
+import com.example.mobilebanking.model.SecretKeyRequest
+import com.example.mobilebanking.model.SecretKeyResponse
 import com.example.mobilebanking.model.TransferRequest
 import com.example.mobilebanking.model.TransferServerResponse
 import com.google.gson.Gson
@@ -40,11 +42,18 @@ interface TransferServerService {
     fun transferMoney(@Body transferRequest: TransferRequest): Call<Any>
 }
 
+interface SendKeyService {
+    @POST("/receiveKey")
+    fun sendSecretKey(@Body key: SecretKeyRequest): Call<Any>
+}
+
 interface RetrofitRepository {
     fun fetchExchangeRates(): MutableState<ExchangeRateResponse>
     fun getNearbyAtms(location: String, callback: (List<GoogleMapsApiResponse>) -> Unit)
 
     fun transferMoney(request: TransferRequest, callback: (TransferServerResponse) -> Unit)
+
+    fun sendSecretKeyToServer(request: SecretKeyRequest, callback: (SecretKeyResponse) -> Unit)
 
 }
 
@@ -52,6 +61,7 @@ class NetworkRetrofitRepository : RetrofitRepository {
     private val apiService = ExchangeRateRetrofitInstance.create()
     private val mapsApiService = GoogleMapsRetrofitInstance.create()
     private val transferServerService = TransferServerRetrofitInstance.create()
+    private val sendKeyService = SendKeyInstance.create()
 
     override fun fetchExchangeRates(): MutableState<ExchangeRateResponse> {
         val call: Call<ExchangeRateResponse> = apiService.getExchangeRates()
@@ -146,6 +156,29 @@ class NetworkRetrofitRepository : RetrofitRepository {
             }
         })
     }
+
+    override fun sendSecretKeyToServer(
+        request: SecretKeyRequest,
+        callback: (SecretKeyResponse) -> Unit) {
+        val call: Call<Any> = sendKeyService.sendSecretKey(request)
+        call.enqueue(object : Callback<Any> {
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                if (response.isSuccessful) {
+                    val jsonString = Gson().toJson(response.body())
+                    val jsonObject = JsonParser().parse(jsonString).asJsonObject
+                    val resultCode = jsonObject.getAsJsonPrimitive("code")?.asInt
+                    val resultMessage = jsonObject.getAsJsonPrimitive("message")?.asString
+                    callback(SecretKeyResponse(resultCode, resultMessage))
+                } else {
+                    callback(SecretKeyResponse(code = 500, message = "Internal Server Error"))
+                }
+            }
+
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                callback(SecretKeyResponse(code = 500, message = "Internal Server Error"))
+            }
+        })
+    }
 }
 
 private class ExchangeRateRetrofitInstance {
@@ -189,6 +222,21 @@ private class TransferServerRetrofitInstance {
                 .build()
 
             return retrofit.create(TransferServerService::class.java)
+        }
+    }
+}
+
+private class SendKeyInstance {
+    companion object {
+        private const val SERVER_URL = "http://10.0.2.2:8080/"
+
+        fun create(): SendKeyService {
+            val retrofit = Retrofit.Builder()
+                .baseUrl(SERVER_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            return retrofit.create(SendKeyService::class.java)
         }
     }
 }
