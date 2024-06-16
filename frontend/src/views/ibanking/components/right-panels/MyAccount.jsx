@@ -10,8 +10,7 @@ import { Table, TableBody } from '@mui/material';
 import TransactionRow from "./components/TransactionRow";
 
 const MyAccount = () => {
-    const date = new Date();
-    const [accountSold, setAccountSold] = useState("12332.0 Lei");
+    const [accountSold, setAccountSold] = useState("0.0 Lei");
     const [username, setUsername] = useState("username");
     const [iban, setIban] = useState("0000 0000 0000 0000");
     const [isSoldVisible, setIsSoldVisible] = useState(true);
@@ -37,21 +36,15 @@ const MyAccount = () => {
         });
     }
 
-    const formatDateTime = (date) => {
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const year = date.getFullYear();
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        const seconds = String(date.getSeconds()).padStart(2, '0');
-        return `${month}/${day}/${year}, ${hours}:${minutes}:${seconds}`;
+    const lastLogin= () => {
+        return localStorage.getItem("lastLogin")
     };
 
     return (
         <div className="right-menu normal-panel">
             <div className="my-account-titles">
                 <h1 className="my-account-title">My account</h1>
-                <h3 className="my-account-title">{`Last account activity: ${formatDateTime(date)}`}</h3>
+                <h3 className="my-account-title">{`Last account activity: ${lastLogin()}`}</h3>
             </div>
             <div className="account-details">
                 <ButtonGroup className="account-details-button-group" variant="outlined">
