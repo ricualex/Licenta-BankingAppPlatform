@@ -1,8 +1,8 @@
 module.exports = function (router, firebaseUtils) {
-    router.post('/login', async (req, res) => {
-        const { username, password } = req.body;
+    router.post('/syncUser', async (req, res) => {
+        const userId = req.body.userId;
         try {
-            const firebaseUser = await firebaseUtils.loginUsingFirebase(username);
+            const firebaseUser = await firebaseUtils.syncUserDataForRedux(userId);
             if (!firebaseUser) {
                 return res.status(404).json({ message: 'User not found' });
             }
@@ -15,7 +15,7 @@ module.exports = function (router, firebaseUtils) {
                         iban: firebaseUser.user.iban,
                         transactions: firebaseUser.user.transactions
                     };
-                    return res.status(200).json({user: filteredObject, token: firebaseUser.user.loginToken, message: 'Successfuly logged in' });
+                    return res.status(200).json({ user: filteredObject, token: firebaseUser.user.loginToken, message: 'Successfuly logged in' });
                 }
                 else {
                     return res.status(500).json({ message: 'Something went wrong' });
@@ -25,4 +25,4 @@ module.exports = function (router, firebaseUtils) {
             res.status(500).json({ message: 'Server error', error: error.message });
         }
     });
-};
+}

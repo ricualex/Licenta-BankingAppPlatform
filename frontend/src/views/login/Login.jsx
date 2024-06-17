@@ -3,10 +3,12 @@ import axios from 'axios';
 import "./LoginStyle.css"
 import { FaUser, FaLock } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
 
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -14,11 +16,13 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:80/api/login', { username, password });
+      const response = await axios.post('http://localhost:8080/api/login', { username, password });
       if (response.status === 200) {
-        console.log(response);
-        localStorage.setItem("jwtToken", response.data.token);
-        navigate("/home");
+        localStorage.setItem("jwtToken", Object.keys(response.data.token));
+        localStorage.setItem("lastLogin", Object.values(response.data.token));
+        localStorage.setItem("userId", response.data.user.id);
+        dispatch({ type: 'SET_USER', payload: response.data.user });
+        navigate("/ibanking");
       }
     } catch (error) {
       console.error('Login failed', error.response.data);

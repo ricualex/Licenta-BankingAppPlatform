@@ -12,7 +12,7 @@ export default function Navbar() {
           <CustomLink to="/credits">Credits</CustomLink>
           <CustomLink to="/cards">Cards</CustomLink>
           <CustomLink to="/finance">Finance</CustomLink>
-          <CustomLink to="/ibanking">InternetBanking</CustomLink>
+          <CustomLink to="/login">InternetBanking</CustomLink>
         </ul>
       </nav>
     </div>

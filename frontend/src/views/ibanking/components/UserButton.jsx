@@ -26,7 +26,7 @@ const UserButton = () => {
     };
 
     const handleMenuItemClick = (event, index) => {
-        navigate("/login");
+        navigate("/");
         setOpen(false);
     };
 

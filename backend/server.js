@@ -13,16 +13,16 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+const admin = require('firebase-admin');
+const serviceAccount = require("./firebase-connection.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://mobilebankingapp-53f91-default-rtdb.firebaseio.com"
+});
+const firebaseUtils = require("./firebaseUtils/firebaseQueries.js")(admin);
+
 app.use(express.json());
-app.use('/api', router);
-
-console.log(process.env.DATABASE_URL);
-
-const mongoose = require('mongoose');
-
-mongoose.connect(process.env.DATABASE_URL, {})
-  .then(() => console.log("MongoDB connected"))
-  .catch(err => console.log(err));
+app.use('/api', router(firebaseUtils));
 
 const port = process.env.SERVER_PORT;
 app.listen(port, () => {
