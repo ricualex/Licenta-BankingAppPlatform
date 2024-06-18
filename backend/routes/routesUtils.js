@@ -13,6 +13,7 @@ module.exports = function (router, firebaseUtils) {
                         userName: firebaseUser.user.userName,
                         balance: firebaseUser.user.balance,
                         iban: firebaseUser.user.iban,
+                        friendList: firebaseUser.user.friendList,
                         transactions: firebaseUser.user.transactions
                     };
                     return res.status(200).json({ user: filteredObject, token: firebaseUser.user.loginToken, message: 'Successfuly logged in' });

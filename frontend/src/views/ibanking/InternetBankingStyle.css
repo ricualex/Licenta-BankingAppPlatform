@@ -184,3 +184,9 @@ td {
 .data-cell {
     padding: 0px;
 }
+
+.send-money-button {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 20px;
+}

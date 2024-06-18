@@ -6,6 +6,7 @@ module.exports = function (firebaseUtils) {
     require("./loginRoutes")(router, firebaseUtils);
     require("./redisRoutes")(router);
     require("./routesUtils.js")(router, firebaseUtils);
+    require("./transfers.js")(router, firebaseUtils);
 
     return router;
 };

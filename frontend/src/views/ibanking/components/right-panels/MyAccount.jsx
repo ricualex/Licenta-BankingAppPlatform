@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "../../InternetBankingStyle.css"
+import "../../InternetBankingStyle.css";
 import { useState } from 'react';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
@@ -12,15 +12,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 const MyAccount = () => {
-    const user = useSelector((state) => state.user.user);
     const [userDataState, setUserDataState] = useState({
         accountSold: "0 Lei",
         username: "userName",
         iban: "0000 000 000 000",
-        transactionRows: [
-            { data: ["Profi", "-20 lei"] },
-            { data: ["Alexandru", "+15 lei"] },
-        ],
+        transactionRows: [],
         paymentsRows: [
             { data: ["Power bill", "2 days", "-150 lei"] },
             { data: ["Cell phone", "12 days", "-192 lei"] },
@@ -34,16 +30,6 @@ const MyAccount = () => {
         console.log(userDataState);
     }
 
-    const transactionRows = [
-        { data: ["Profi", "-20 lei"] },
-        { data: ["Alexandru", "+15 lei"] },
-    ];
-
-    const paymentsRows = [
-        { data: ["Power bill", "2 days", "-150 lei"] },
-        { data: ["Cell phone", "12 days", "-192 lei"] },
-    ];
-
     const copyToClipboard = (text) => {
         navigator.clipboard.writeText(text).then(() => {
         }).catch(err => {
@@ -51,44 +37,48 @@ const MyAccount = () => {
         });
     }
 
-    const lastLogin= () => {
-        return localStorage.getItem("lastLogin")
+    const lastLogin = () => {
+        return localStorage.getItem("lastLogin");
     };
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const userId = localStorage.getItem("userId");
+                const response = await axios.post('http://localhost:8080/api/syncUser', { userId });
+                if (response.status === 200) {
+                    dispatch({ type: 'SET_USER', payload: response.data.user });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const userId = localStorage.getItem("userId");
-        const response = await axios.post('http://localhost:8080/api/syncUser', { userId });
-        if (response.status === 200) {
-          dispatch({ type: 'SET_USER', payload: response.data.user });
-          console.log(response.data.user);
-          const transactionNames = Object.keys(response.data.user.transactions);
-          const transactionValues = Object.values(response.data.user.transactions);
-          const userData = {
-            accountSold: `${response.data.user.balance.RON} Lei`,
-            username: response.data.user.userName,
-            iban: response.data.user.iban,
-            transactionRows: [
-                { data: [transactionNames[0], transactionValues[0]] },
-                { data: [transactionNames[1], transactionValues[1]] },
-            ],
-            paymentsRows: [
-                { data: ["Power bill", "2 days", "-150 lei"] },
-                { data: ["Cell phone", "12 days", "-192 lei"] },
-            ]
-        }
-          setUserDataState(userData)
-        }
-      } catch (error) {
-        console.error('Failed to sync user data', error);
-      }
-    };
-    fetchData();
-    const intervalId = setInterval(fetchData, 5000);
-    return () => clearInterval(intervalId);
-  }, [dispatch]);
+                    const transactions = response.data.user.transactions;
+                    const transactionRows = transactions.slice(-2).reverse().map(transaction => {
+                        const userName = Object.keys(transaction)[0];
+                        const values = Object.values(transaction)[0];
+                        const currencyString = Object.keys(values)
+                            .map(currency => `${values[currency]} ${currency}`)
+                            .join(" ");
+                        return { data: [userName, currencyString] };
+                    });
+
+                    const userData = {
+                        accountSold: `${parseFloat(response.data.user.balance.RON).toFixed(2)} Lei`,
+                        username: response.data.user.userName,
+                        iban: response.data.user.iban,
+                        transactionRows: transactionRows,
+                        paymentsRows: [
+                            { data: ["Power bill", "2 days", "-150 lei"] },
+                            { data: ["Cell phone", "12 days", "-192 lei"] },
+                        ]
+                    };
+                    setUserDataState(userData);
+                }
+            } catch (error) {
+                console.error('Failed to sync user data', error);
+            }
+        };
+        fetchData();
+        const intervalId = setInterval(fetchData, 5000);
+        return () => clearInterval(intervalId);
+    }, [dispatch]);
 
     return (
         <div className="right-menu normal-panel">
@@ -130,14 +120,14 @@ const MyAccount = () => {
                 <h2 style={{ color: "white", fontSize: "18px" }}>Future payments</h2>
                 <Table>
                     <TableBody>
-                        {paymentsRows.map((row, index) => (
+                        {userDataState.paymentsRows.map((row, index) => (
                             <TransactionRow key={index} icon="clock" data={row.data} />
                         ))}
                     </TableBody>
                 </Table>
             </div>
         </div>
-    )
+    );
 }
 
 export default MyAccount;
