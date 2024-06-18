@@ -25,7 +25,7 @@ const Login = () => {
         navigate("/ibanking");
       }
     } catch (error) {
-      console.error('Login failed', error.response.data);
+      console.error('Login failed', error?.response.data);
     }
   };
 
