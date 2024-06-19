@@ -1,7 +1,7 @@
 const axios = require("axios");
 const xml2js = require("xml2js");
 
-module.exports = function (router) {
+module.exports = function (router, firebaseUtils) {
     router.get('/exchangeRatesAll', async (req, res) => {
         try {
             const response = await axios.get(process.env.EXCHANGE_RATE_BNR_XML);
@@ -15,6 +15,20 @@ module.exports = function (router) {
             });
         } catch (error) {
             res.status(500).send("Something went wrong!");
+        }
+    });
+
+    router.post('/convertCurrency', async (req, res) => {
+        try {
+            const { userKey, amount, currencyFrom, currencyTo } = req.body;
+            if (!userKey || !amount || !currencyFrom || !currencyTo) {
+                return res.status(400).send('Missing required fields');
+            }
+
+            const result = await firebaseUtils.convertCurrency(userKey, amount, currencyFrom, currencyTo);
+            res.status(200).send(result);
+        } catch (error) {
+            res.status(500).send({ message: "Something went wrong!", error: error.message });
         }
     });
 }
