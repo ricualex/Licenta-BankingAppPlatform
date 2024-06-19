@@ -37,4 +37,43 @@ module.exports = function (router) {
             res.status(500).json({ error: "Something went wrong!" });
         }
     });
+
+    const fetchExchangeRate = async (from, to) => {
+        try {
+          const response = await axios.get('https://www.alphavantage.co/query', {
+            params: {
+              function: 'FX_DAILY',
+              from_symbol: from,
+              to_symbol: to,
+              apikey: 'YOUR_API_KEY',
+            },
+          });
+          return response.data;
+        } catch (error) {
+          console.error('Error fetching the forex data', error);
+          throw error;
+        }
+      };
+      
+      router.get('/getExchangeRate', async (req, res) => {
+        console.log("test");
+        const { from, to } = req.query;
+        const cacheKey = `${from}_${to}`;
+      
+        redisClient.get(cacheKey, async (err, data) => {
+          if (err) throw err;
+          if (data) {
+            return res.json(JSON.parse(data));
+          } else {
+            try {
+              const forexData = await fetchExchangeRate(from, to);
+              console.log(forexData);
+              redisClient.setex(cacheKey, 43200, JSON.stringify(forexData));
+              return res.json(forexData);
+            } catch (error) {
+              return res.status(500).json({ error: 'Failed to fetch data' });
+            }
+          }
+        });
+      });
 }
