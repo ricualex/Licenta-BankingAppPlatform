@@ -206,12 +206,59 @@ module.exports = (admin) => {
     }
   }
 
+  async function getUserTransactions(userName) {
+    try {
+      const transactionsRef = db.ref('transactions');
+      const transactionsSnapshot = await transactionsRef.once('value');
+      let transactions = [];
+
+      transactionsSnapshot.forEach((childSnapshot) => {
+        const transaction = childSnapshot.val();
+        if (transaction.userName === userName) {
+          
+          transactions.push({
+            id: childSnapshot.key,
+            amount: transaction.amount,
+            date: transaction.date,
+            destinationIban: transaction.destinationIban,
+            destinationName: transaction.destinationName
+          });
+        }
+      });
+
+      const usersRef = db.ref('users');
+      const usersSnapshot = await usersRef.orderByChild('userName').equalTo(userName).once('value');
+      let friendsTransactions = [];
+
+      usersSnapshot.forEach((userSnapshot) => {
+        const user = userSnapshot.val();
+        if (user.friendsTransactions) {
+          user.friendsTransactions.forEach(transaction => {
+            let userName = Object.keys(transaction)[0];
+            let amount = transaction[userName];
+        
+            friendsTransactions.push({
+              userName: userName,
+              amount: amount
+            });
+          });
+        } 
+      });
+
+      return { success: true, transactions: transactions, friendsTransactions: friendsTransactions };
+    } catch (error) {
+      console.error('Error fetching user transactions:', error.message);
+      return { success: false, error: error };
+    }
+  }
+
   return {
     getUserByUserName,
     loginUsingFirebase,
     syncUserDataForRedux,
     transferMoney,
     getEmailsForFriendList,
-    convertCurrency
+    convertCurrency,
+    getUserTransactions
   };
 };

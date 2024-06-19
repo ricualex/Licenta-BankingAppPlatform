@@ -26,4 +26,20 @@ module.exports = function (router, firebaseUtils) {
             res.status(500).json({ message: 'Server error', error: error.message });
         }
     });
+
+    router.get('/getUserTransactions', async (req, res) => {
+        const userName = req.query.userName;
+        if (!userName) {
+            return res.status(400).json({ status: 400, message: 'Missing userName parameter' });
+        }
+        try {
+            const data = await firebaseUtils.getUserTransactions(userName);
+            if (data.success === true) {
+                return res.status(200).json({transactions: data.transactions, friendsTransactions: data.friendsTransactions})
+            }
+        }
+        catch (error) {
+            res.status(500).json({ message: 'Something went wrong!', error: error.message });
+        }
+    });
 }
