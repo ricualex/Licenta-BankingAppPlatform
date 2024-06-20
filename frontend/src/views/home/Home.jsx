@@ -6,6 +6,9 @@ import mobileBankingCardImage from '../../assets/mobilebanking.png';
 import loanCalculatorCardImage from "../../assets/card-image-loan-calculator.png"
 import virtualCardsCardImage from "../../assets/virtual-cards-logo.png"
 import ExchangeRateBar from "../../components/exchange-rate-bar/ExchangeRateBar";
+import CreditCalculator from "../../components/credit-calculator/CreditCalculator";
+import WelcomeMessage from "../../components/WelcomeMessage";
+import Footer from "../../components/Footer";
 
 
 const Home = () => {
@@ -45,8 +48,13 @@ const Home = () => {
             <div className="home-rates">
                 <ExchangeRateBar />
             </div>
-
-
+            <div className="welcome-message-panel">
+                <WelcomeMessage />
+            </div>
+            <div className="credit-calculator-panel">
+                <CreditCalculator />
+            </div>
+            <Footer />
         </div>
     )
 }

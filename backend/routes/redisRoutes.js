@@ -66,7 +66,6 @@ module.exports = function (router) {
       } else {
         try {
           const forexData = await fetchExchangeRate(from, to);
-          console.log(forexData);
           redisClient.setex(cacheKey, 43200, JSON.stringify(forexData));
           return res.json(forexData);
         } catch (error) {
