@@ -3,13 +3,12 @@ const sanitizeLoginInput = (input) => {
     return regex.test(input);
 };
 
-if (!sanitizeLoginInput(username) || !sanitizeLoginInput(password)) {
-    return res.status(401).json({ message: 'Invalid login data' });
-}
-
 module.exports = function (router, firebaseUtils) {
     router.post('/login', async (req, res) => {
         const { username, password } = req.body;
+        if (!sanitizeLoginInput(username) || !sanitizeLoginInput(password)) {
+            return res.status(401).json({ message: 'Invalid login data' });
+        }
         try {
             const firebaseUser = await firebaseUtils.loginUsingFirebase(username);
             if (!firebaseUser) {
