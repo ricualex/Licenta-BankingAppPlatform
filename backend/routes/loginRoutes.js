@@ -1,3 +1,12 @@
+const sanitizeLoginInput = (input) => {
+    const regex = /^[a-zA-Z0-9]+$/;
+    return regex.test(input);
+};
+
+if (!sanitizeLoginInput(username) || !sanitizeLoginInput(password)) {
+    return res.status(401).json({ message: 'Invalid login data' });
+}
+
 module.exports = function (router, firebaseUtils) {
     router.post('/login', async (req, res) => {
         const { username, password } = req.body;
@@ -15,7 +24,7 @@ module.exports = function (router, firebaseUtils) {
                         iban: firebaseUser.user.iban,
                         transactions: firebaseUser.user.transactions
                     };
-                    return res.status(200).json({user: filteredObject, token: firebaseUser.user.loginToken, message: 'Successfuly logged in' });
+                    return res.status(200).json({ user: filteredObject, token: firebaseUser.user.loginToken, message: 'Successfuly logged in' });
                 }
                 else {
                     return res.status(500).json({ message: 'Something went wrong' });
