@@ -16,5 +16,14 @@
 }
 
 .home-rates {
-    margin-top: 1%;
+    margin-top: 40px;
+}
+
+.credit-calculator-panel {
+    margin-top: 40px;
+    margin-bottom: 80px;
+}
+
+.welcome-message-panel {
+    margin-top: 20px;
 }
