@@ -11,7 +11,8 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [username, setUsername] = useState('');
+  const rememberedUsername = localStorage.getItem("rememberUsernameValue") ? localStorage.getItem("rememberUsernameValue") : '';
+  const [username, setUsername] = useState(rememberedUsername);
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (event) => {
@@ -82,27 +83,36 @@ const Login = () => {
     setPassword(event.target.value);
   };
 
+  const handleCheckRememberMe = (event) => {
+    if (event.target.value === true) {
+      localStorage.setItem("rememberUsernameValue", username);
+    }
+    else {
+      localStorage.removeItem("rememberUsernameValue");
+    }
+  }
+
   return (
     <div className="login-page">
       <div className="wrapper">
         <form onSubmit={handleSubmit}>
           <h1>Login</h1>
           <div className="login-input-box">
-            <input type="text" value={username} onChange={handleUsernameChange} placeholder="Username or Email" required />
+            <input type="text" id="usernameInput" value={username} onChange={handleUsernameChange} placeholder="Username or Email" required />
             <FaUser className="login-icon" />
           </div>
           <div className="login-input-box">
-            <input type="password" value={password} onChange={handlePasswordChange} placeholder="Password" required />
+            <input type="password" id="passwordInput" value={password} onChange={handlePasswordChange} placeholder="Password" required />
             <FaLock className="login-icon" />
           </div>
           <div className="remember-forgot">
             <label>
-              <input type="checkbox" />
+              <input type="checkbox" onClick={(e) => handleCheckRememberMe(e)}/>
               Remember me!
             </label>
             <a href="/">Forgot Password or Username?</a>
           </div>
-          <button type="submit" className="login-button">Login</button>
+          <button type="submit" id="loginButton" className="login-button">Login</button>
         </form>
       </div>
     </div>
