@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import "./../../InternetBankingStyle.css";
+import config from "../../../../config";
 
 const TransferMoney = () => {
     const user = useSelector((state) => state.user.user);
@@ -43,7 +44,7 @@ const TransferMoney = () => {
         else {
             try {
                 const numericAmount = parseFloat(amount);
-                const response = await axios.post('http://localhost:8080/api/transferMoney', {  
+                const response = await axios.post(config.transferMoneyApi, {  
                     userFrom: user.userName,
                     "userTo": usernameOrIban,
                     "sum": numericAmount,
@@ -87,7 +88,7 @@ const TransferMoney = () => {
         const userId = localStorage.getItem("userId");
         const getFriendList = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/getFriendNames', {
+                const response = await axios.get(config.getFriendsNamesApi, {
                     params: { userId }
                 });
                 if (response.status === 200) {

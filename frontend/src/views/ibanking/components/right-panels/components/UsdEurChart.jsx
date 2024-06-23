@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import axios from 'axios';
+import config from '../../../../../config';
 
 ChartJS.register(
   CategoryScale,
@@ -33,7 +34,7 @@ const UsdEurChart = () => {
 
   const fetchData = async (from, to) => {
     try {
-      const response = await axios.get('http://localhost:8080/api/getExchangeRate', {
+      const response = await axios.get(config.getExchangeRatesApi, {
         params: { from, to },
       });
 

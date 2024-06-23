@@ -5,6 +5,7 @@ import { FaUser, FaLock } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2'
+import config from "../../config";
 
 
 const Login = () => {
@@ -47,7 +48,7 @@ const Login = () => {
     });
   
     try {
-      const response = await axios.post('http://localhost:8080/api/login', { username, password });
+      const response = await axios.post(config.loginApi, { username, password });
       if (response.status === 200) {
         localStorage.setItem("jwtToken", Object.keys(response.data.token));
         localStorage.setItem("lastLogin", Object.values(response.data.token));

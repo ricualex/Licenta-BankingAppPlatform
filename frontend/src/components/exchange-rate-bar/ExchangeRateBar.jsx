@@ -5,6 +5,7 @@ import uk_flag from "../../assets/uk_flag.png"
 import eu_flag from "../../assets/europa_flag.png"
 import us_flag from "../../assets/us_flag.png"
 import switz_flag from "../../assets/switz_flag.png"
+import config from "../../config";
 
 export default function ExchangeRateBar() {
     const [ratesError, setRatesError] = useState("");
@@ -36,7 +37,7 @@ export default function ExchangeRateBar() {
     ]);
 
     const getCurrencyRates = useCallback(async () => {
-        axios.get('http://localhost:8080/api/exchangeRatesAll')
+        axios.get(config.exchangeRatesApi)
             .then((response) => {
                 const rates = response.data;
                 const updatedCurrencyRates = currencyRates.map(rate => ({

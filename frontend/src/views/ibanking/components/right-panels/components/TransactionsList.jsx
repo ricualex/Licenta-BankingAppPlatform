@@ -4,6 +4,7 @@ import { Grid, List, ListItem, ListItemText, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import "./styles.css";
+import config from '../../../../../config';
 
 const TransactionList = () => {
     const [transactions, setTransactions] = useState([]);
@@ -12,7 +13,7 @@ const TransactionList = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/getUserTransactions?userName=user');
+                const response = await axios.get(config.getUserTransactionsApi);
                 setTransactions(response.data.transactions);
                 setFriendsTransactions(response.data.friendsTransactions);
             } catch (error) {

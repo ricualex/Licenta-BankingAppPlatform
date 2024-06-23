@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import axios from 'axios';
+import config from '../../../../../config';
 
 const currencies = [
     "AED", "AUD", "BGN", "BRL", "CAD", "CHF", "CNY", "CZK",
@@ -92,7 +93,7 @@ const CurrencyConverterForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/convertCurrency', formData);
+            const response = await axios.post(config.convertCurrencyApi, formData);
             console.log('Conversion Result:', response.data);
         } catch (error) {
             console.error('Error converting currency:', error.response?.data || error.message);

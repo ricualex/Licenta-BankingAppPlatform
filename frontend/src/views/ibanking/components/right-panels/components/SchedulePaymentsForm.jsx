@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { TextField, Button } from '@mui/material';
 import './styles.css';
+import config from '../../../../../config';
 
 const SchedulePaymentForm = () => {
   const userKey = localStorage.getItem("userId");
@@ -15,7 +16,7 @@ const SchedulePaymentForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8081/schedule-payment', null, {
+      const response = await axios.post(config.schedulePaymentApi, null, {
         params: {
           userKey,
           destinationName,
