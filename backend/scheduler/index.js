@@ -131,7 +131,7 @@ app.delete('/delete-scheduler', async (req, res) => {
 
       if (paymentKeys.length > 0) {
         await Promise.all(paymentKeys.map(key => db.ref(`scheduler/${key}`).remove()));
-        res.status(200).send('Scheduled payment(s) deleted successfully.');
+        res.status(200).send('Recurent payment deleted successfully.');
       } else {
         res.status(404).send('No scheduled payment found with the given destination name.');
       }
