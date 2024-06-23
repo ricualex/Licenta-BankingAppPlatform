@@ -5,13 +5,15 @@ import { FaUser, FaLock } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import Swal from 'sweetalert2'
+import config from "../../config";
 
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [username, setUsername] = useState('');
+  const rememberedUsername = localStorage.getItem("rememberUsernameValue") ? localStorage.getItem("rememberUsernameValue") : '';
+  const [username, setUsername] = useState(rememberedUsername);
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (event) => {
@@ -19,7 +21,7 @@ const Login = () => {
     let timerInterval;
     const swalInstance = Swal.fire({
       title: "Please confirm using mobile application!",
-      html: "I will close in <b></b> minutes and seconds.",
+      html: "Login time will expire will expire in <b></b> minutes and seconds.",
       timer: 120000,
       timerProgressBar: true,
       didOpen: () => {
@@ -46,7 +48,7 @@ const Login = () => {
     });
   
     try {
-      const response = await axios.post('http://localhost:8080/api/login', { username, password });
+      const response = await axios.post(config.loginApi, { username, password });
       if (response.status === 200) {
         localStorage.setItem("jwtToken", Object.keys(response.data.token));
         localStorage.setItem("lastLogin", Object.values(response.data.token));
@@ -82,27 +84,36 @@ const Login = () => {
     setPassword(event.target.value);
   };
 
+  const handleCheckRememberMe = (event) => {
+    if (event.target.value === true) {
+      localStorage.setItem("rememberUsernameValue", username);
+    }
+    else {
+      localStorage.removeItem("rememberUsernameValue");
+    }
+  }
+
   return (
     <div className="login-page">
       <div className="wrapper">
         <form onSubmit={handleSubmit}>
           <h1>Login</h1>
           <div className="login-input-box">
-            <input type="text" value={username} onChange={handleUsernameChange} placeholder="Username or Email" required />
+            <input type="text" id="usernameInput" value={username} onChange={handleUsernameChange} placeholder="Username or Email" required />
             <FaUser className="login-icon" />
           </div>
           <div className="login-input-box">
-            <input type="password" value={password} onChange={handlePasswordChange} placeholder="Password" required />
+            <input type="password" id="passwordInput" value={password} onChange={handlePasswordChange} placeholder="Password" required />
             <FaLock className="login-icon" />
           </div>
           <div className="remember-forgot">
             <label>
-              <input type="checkbox" />
+              <input type="checkbox" onClick={(e) => handleCheckRememberMe(e)}/>
               Remember me!
             </label>
             <a href="/">Forgot Password or Username?</a>
           </div>
-          <button type="submit" className="login-button">Login</button>
+          <button type="submit" id="loginButton" className="login-button">Login</button>
         </form>
       </div>
     </div>

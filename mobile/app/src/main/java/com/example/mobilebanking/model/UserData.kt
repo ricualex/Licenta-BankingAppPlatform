@@ -16,9 +16,9 @@ data class UserData(
     val iban: String? = "",
     val balance: Map<String, Double> = mapOf("RON" to 0.0),
     val cards: Map<String, CreditCard> = mapOf(),
-    val transactions: Map<String, Double> = mapOf("Default" to 0.0),
-    val friendList: List<String> = listOf("Default"),
-    val friendsTransactions: Map<String, Double> = mapOf("Default" to 0.0),
+    val transactions: List<Map<String, Map<String, Double>>> = listOf( mapOf("Default" to mapOf("RON" to 0.0))),
+    val friendList: Map<String, Boolean> = mapOf("Default" to false),
+    val friendsTransactions: List<Map<String, Map<String, Double>>> = listOf( mapOf("Default" to mapOf("RON" to 0.0))),
     val needConfirmation: String? = "false"
 ) {
     fun encrypt(keyStoreKey: String): UserData {

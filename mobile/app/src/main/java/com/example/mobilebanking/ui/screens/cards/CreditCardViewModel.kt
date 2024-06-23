@@ -69,7 +69,6 @@ class CreditCardViewModel : ViewModel() {
     }
 
     fun isPanNumberValid() = creditCard.value.panNumber.length in 8..19 &&
-            // Luhn algo
             creditCard.value.panNumber.reversed().mapIndexed { i, v ->
                 if ((i + 1) % 2 == 0) {
                     val num = v.digitToInt() * 2

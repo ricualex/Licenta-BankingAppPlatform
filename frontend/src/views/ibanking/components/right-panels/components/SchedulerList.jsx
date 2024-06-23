@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './styles.css';
+import config from '../../../../../config';
 
 const SchedulerList = () => {
     const [schedulerData, setSchedulerData] = useState([]);
@@ -10,12 +11,14 @@ const SchedulerList = () => {
         const fetchSchedulerData = async () => {
             try {
                 const userId = localStorage.getItem("userId");
-                const response = await axios.get('http://localhost:8081/fetch-scheduler', {
+                const response = await axios.get(config.fetchSchedulerApi, {
                     params: {
                       userKey: userId
                     }
                   });
-                setSchedulerData(response.data);
+                if (response?.data) {
+                    setSchedulerData(response.data);
+                }
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching scheduler data:', error);
@@ -28,7 +31,7 @@ const SchedulerList = () => {
 
     const handleDelete = async (destinationName) => {
         try {
-            await axios.delete(`http://localhost:8081/delete-scheduler`, {
+            await axios.delete(config.deleteScheduleApi, {
                 params: { destinationName }
             });
             setSchedulerData(schedulerData.filter(payment => payment.destinationName !== destinationName));

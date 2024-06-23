@@ -83,7 +83,7 @@ module.exports = (admin) => {
         const user1Snapshot = await user1Ref.once('value');
         const user1Data = user1Snapshot.val();
         if (!user1Data) {
-          return { status: 500, message: 'User1 not found' };
+          return { status: 500, message: 'Something went wrong!' };
         }
         const user1Key = Object.keys(user1Data)[0];
         const user1Name = user1Data[user1Key].userName;
@@ -91,7 +91,7 @@ module.exports = (admin) => {
         const user2Snapshot = await user2Ref.once('value');
         const user2Data = user2Snapshot.val();
         if (!user2Data) {
-          return { status: 500, message: 'User2 not found' };
+          return { status: 500, message: 'User not found!' };
         }
         const user2Key = Object.keys(user2Data)[0];
         const user2Name = user2Data[user2Key].userName;
@@ -126,7 +126,7 @@ module.exports = (admin) => {
         return { status: 200, message: 'Transfer was successful!' };
 
       } catch (error) {
-        return { status: 500, message: 'Transfer failed', error: error.message };
+        return { status: 500, message: 'Transfer failed!' };
       }
     }
   }

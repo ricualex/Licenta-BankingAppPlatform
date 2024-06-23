@@ -9,6 +9,7 @@ import { Table, TableBody } from '@mui/material';
 import TransactionRow from "./components/TransactionRow";
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import config from "../../../../config";
 
 const MyAccount = () => {
     const userId = localStorage.getItem("userId");
@@ -45,7 +46,7 @@ const MyAccount = () => {
     useEffect(() => {
         const fetchSchedulerData = async () => {
             try {
-                const response = await axios.get('http://localhost:8081/fetch-scheduler', {
+                const response = await axios.get(config.fetchSchedulerApi, {
                     params: {
                         userKey: userId
                     }
@@ -69,7 +70,7 @@ const MyAccount = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.post('http://localhost:8080/api/syncUser', { userId });
+                const response = await axios.post(config.syncUserApi, { userId });
                 if (response.status === 200) {
                     dispatch({ type: 'SET_USER', payload: response.data.user });
 

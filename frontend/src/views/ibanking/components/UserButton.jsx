@@ -55,7 +55,7 @@ const UserButton = () => {
                     onClick={handleClick}
                     id={"userButton"}
                 >
-                    {`Welcome, user`}
+                    {`Welcome back, user!`}
                 </Button>
                 <Button
                     id={"userButton"}
