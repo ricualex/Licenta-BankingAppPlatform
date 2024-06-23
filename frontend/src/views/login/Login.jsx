@@ -21,7 +21,7 @@ const Login = () => {
     let timerInterval;
     const swalInstance = Swal.fire({
       title: "Please confirm using mobile application!",
-      html: "I will close in <b></b> minutes and seconds.",
+      html: "Login time will expire will expire in <b></b> minutes and seconds.",
       timer: 120000,
       timerProgressBar: true,
       didOpen: () => {

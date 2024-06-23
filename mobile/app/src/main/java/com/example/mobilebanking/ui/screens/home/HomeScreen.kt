@@ -325,7 +325,7 @@ fun RegisterTextField(
             onValueChange(it)
         },
         label = { Text(text = labelText, style = TextStyle(fontSize = 20.sp)) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+//        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         textStyle = TextStyle(fontSize = 20.sp, color = Color.White),
         singleLine = true
     )
