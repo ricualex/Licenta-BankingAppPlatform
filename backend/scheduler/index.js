@@ -52,7 +52,7 @@ async function makePayment(userKey, destinationName, destinationIban, amount) {
   }
 }
 
-app.post('/schedule-payment', async (req, res) => {
+app.post('/scheduler/schedule-payment', async (req, res) => {
   const { userKey, destinationName, destinationIban, amount, startDate, recurrenceDays } = req.query;
 
   try {
@@ -75,7 +75,7 @@ app.post('/schedule-payment', async (req, res) => {
   }
 });
 
-app.get('/fetch-scheduler', async (req, res) => {
+app.get('/scheduler/fetch-scheduler', async (req, res) => {
   try {
     const userKey = req.query.userKey;
     if (!userKey) {
@@ -117,7 +117,7 @@ app.get('/fetch-scheduler', async (req, res) => {
 });
 
 
-app.delete('/delete-scheduler', async (req, res) => {
+app.delete('/scheduler/delete-scheduler', async (req, res) => {
   const { destinationName } = req.query;
   try {
     const schedulerRef = db.ref('scheduler');
@@ -161,7 +161,7 @@ cron.schedule('0 0 * * *', async () => {
   }
 });
 
-app.get('/', (req, res) => {
+app.get('/scheduler/', (req, res) => {
   res.send('Payment Scheduler is running!');
 });
 
