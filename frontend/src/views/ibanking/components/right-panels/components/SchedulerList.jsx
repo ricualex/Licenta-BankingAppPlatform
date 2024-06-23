@@ -16,7 +16,10 @@ const SchedulerList = () => {
                       userKey: userId
                     }
                   });
-                setSchedulerData(response.data);
+                if (response?.data) {
+                    setSchedulerData(response.data);
+                }
+                console.log(response);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching scheduler data:', error);
